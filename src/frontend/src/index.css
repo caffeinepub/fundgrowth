@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+        /* Deep forest green + warm neutrals + gold accent palette */
+        --background: 0.98 0.005 120;
+        --foreground: 0.25 0.015 140;
+        --card: 1 0 0;
+        --card-foreground: 0.25 0.015 140;
+        --popover: 1 0 0;
+        --popover-foreground: 0.25 0.015 140;
+        --primary: 0.45 0.12 155;
+        --primary-foreground: 0.98 0.005 120;
+        --secondary: 0.92 0.01 80;
+        --secondary-foreground: 0.25 0.015 140;
+        --muted: 0.95 0.008 100;
+        --muted-foreground: 0.55 0.01 130;
+        --accent: 0.75 0.15 75;
+        --accent-foreground: 0.15 0.02 80;
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        --border: 0.88 0.008 120;
+        --input: 0.88 0.008 120;
+        --ring: 0.45 0.12 155;
+        --chart-1: 0.45 0.12 155;
+        --chart-2: 0.75 0.15 75;
+        --chart-3: 0.35 0.1 170;
+        --chart-4: 0.65 0.12 50;
+        --chart-5: 0.55 0.08 200;
+    }
+
+    .dark {
+        --background: 0.15 0.015 140;
+        --foreground: 0.95 0.008 120;
+        --card: 0.18 0.018 145;
+        --card-foreground: 0.95 0.008 120;
+        --popover: 0.18 0.018 145;
+        --popover-foreground: 0.95 0.008 120;
+        --primary: 0.55 0.14 150;
+        --primary-foreground: 0.98 0.005 120;
+        --secondary: 0.25 0.02 140;
+        --secondary-foreground: 0.95 0.008 120;
+        --muted: 0.22 0.018 145;
+        --muted-foreground: 0.65 0.01 130;
+        --accent: 0.75 0.15 75;
+        --accent-foreground: 0.15 0.02 80;
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        --border: 0.25 0.02 140;
+        --input: 0.25 0.02 140;
+        --ring: 0.55 0.14 150;
+        --chart-1: 0.55 0.14 150;
+        --chart-2: 0.75 0.15 75;
+        --chart-3: 0.45 0.12 170;
+        --chart-4: 0.65 0.12 50;
+        --chart-5: 0.55 0.08 200;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}
+
+@layer components {
+    .container-custom {
+        @apply container mx-auto px-4 sm:px-6 lg:px-8;
+    }
+}

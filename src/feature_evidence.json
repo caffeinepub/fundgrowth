@@ -1,0 +1,22 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-replace-the-existing-fundgrowth-logo-asset-at-assets-generated-fundgrowth-logo-dim-512x192-png-with-the-user-uploaded-image-file-logo-png-and-ensure-all-places-that-render-the-current-logo-show-the-updated-image-including-the-header-footer-and-marketing-pages",
+      "featureTitle": "Replace the existing FUNDGROWTH logo asset at /assets/generated/fundgrowth-logo.dim_512x192.png with the user-uploaded image file logo.png, and ensure all places that render the current logo show the updated image (including the header, footer, and marketing pages).",
+      "files": [],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

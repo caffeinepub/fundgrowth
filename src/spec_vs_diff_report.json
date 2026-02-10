@@ -1,0 +1,29 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-10T17:26:19.456Z",
+  "summary": "The diff only modifies project_state.json and does not update the required logo asset or any frontend components that render it, so REQ-12 is not implemented.",
+  "missing_requirements": [
+    {
+      "id": "REQ-12",
+      "requirement": "Replace the existing FUNDGROWTH logo asset at /assets/generated/fundgrowth-logo.dim_512x192.png with the user-uploaded image file logo.png, and ensure all places that render the current logo show the updated image (including the header, footer, and marketing pages).",
+      "reason": "No change is shown to the static asset file frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png, and no frontend files were modified to ensure header/footer/marketing pages render the updated logo. The only modified file is project_state.json.",
+      "evidence": [
+        "project_state.json"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Updated project metadata/state (project_state.json) unrelated to replacing the logo asset.",
+      "reason": "The BuildRequest only asks to replace a specific logo image asset and ensure it is rendered; changing project_state.json is not requested and does not satisfy the acceptance criteria.",
+      "evidence": [
+        "project_state.json"
+      ]
+    }
+  ],
+  "confidence": 0.9,
+  "changed_files": [
+    "project_state.json"
+  ]
+}

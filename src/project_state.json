@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Build a bond-investment website branded as FUNDGROWTH (inspired by WintWealth) as a full investment platform, intended for the domain fundgrowth.in.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Edit Images\n- Replace the logo with the uploaded image (fundgrowth-logo.dim_512x192.png > fundgrowth-logo.dim_512x192.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-full-bond-investment-platform-web-app-branded-as-fundgrowth-inspired-by-the-look-and-feel-and-information-architecture-of-https-www-wintwealth-com-but-with-original-ui-assets-and-copy-no-1-1-cloning",
+      "title": "Create a full bond-investment platform web app branded as \"FUNDGROWTH\", inspired by the look-and-feel and information architecture of https://www.wintwealth.com/, but with original UI assets and copy (no 1:1 cloning).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-authentication-using-internet-identity-and-gate-platform-features-e-g-investing-portfolio-behind-sign-in-while-allowing-public-browsing-of-marketing-pages-and-bond-listings",
+      "title": "Implement authentication using Internet Identity, and gate platform features (e.g., investing/portfolio) behind sign-in while allowing public browsing of marketing pages and bond listings.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-bonds-catalog-with-a-structured-data-model-e-g-issuer-rating-tenure-coupon-yield-minimum-investment-risk-tags-status-and-provide-ui-for-browsing-filtering-sorting-and-viewing-details-for-a-single-bond",
+      "title": "Add a bonds catalog with a structured data model (e.g., issuer, rating, tenure, coupon/yield, minimum investment, risk tags, status) and provide UI for browsing, filtering, sorting, and viewing details for a single bond.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-mock-investment-flow-for-a-selected-bond-enter-amount-respecting-minimum-investment-show-an-order-review-confirm-investment-and-record-the-investment-to-the-signed-in-user-s-portfolio",
+      "title": "Implement a mock investment flow for a selected bond: enter amount (respecting minimum investment), show an order review, confirm investment, and record the investment to the signed-in user’s portfolio.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-user-dashboard-showing-portfolio-summary-and-investment-history-including-totals-e-g-total-invested-and-a-table-of-investments-bond-amount-date-time-status",
+      "title": "Create a user dashboard showing portfolio summary and investment history, including totals (e.g., total invested) and a table of investments (bond, amount, date/time, status).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-core-marketing-pages-similar-in-scope-to-an-investment-platform-homepage-home-hero-value-proposition-featured-bonds-how-it-works-faq-and-contact-support-keep-all-user-facing-text-in-english",
+      "title": "Add core marketing pages similar in scope to an investment platform homepage: Home (hero, value proposition, featured bonds), How it works, FAQ, and Contact/Support; keep all user-facing text in English.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-define-and-apply-one-coherent-original-visual-theme-for-fundgrowth-across-the-app-colors-typography-spacing-components-suitable-for-a-finance-bonds-brand-avoid-default-looking-styling-and-do-not-use-a-blue-purple-palette",
+      "title": "Define and apply one coherent, original visual theme for FUNDGROWTH across the app (colors, typography, spacing, components), suitable for a finance/bonds brand; avoid default-looking styling and do not use a blue+purple palette.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-use-original-static-brand-assets-for-fundgrowth-logo-and-simple-supporting-illustrations-icons-and-render-them-from-frontend-static-assets-not-via-backend",
+      "title": "Generate and use original static brand assets for FUNDGROWTH (logo and simple supporting illustrations/icons) and render them from frontend static assets (not via backend).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-deployment-handoff-for-the-user-s-domain-fundgrowth-in-include-a-clear-checklist-instructions-inside-the-project-e-g-a-deployment-md-describing-how-to-point-fundgrowth-in-dns-to-the-deployed-frontend-canister-including-what-records-to-create-and-where-to-find-the-required-canister-url-values-after-deployment",
+      "title": "Provide a deployment handoff for the user’s domain fundgrowth.in: include a clear checklist/instructions inside the project (e.g., a DEPLOYMENT.md) describing how to point fundgrowth.in DNS to the deployed frontend/canister, including what records to create and where to find the required canister/URL values after deployment.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-existing-fundgrowth-logo-used-across-the-website-with-the-user-provided-uploaded-image-logo-jpg-ensuring-the-updated-logo-appears-anywhere-the-current-logo-is-rendered-including-the-header-and-footer",
+      "title": "Replace the existing FUNDGROWTH logo used across the website with the user-provided uploaded image (logo.jpg), ensuring the updated logo appears anywhere the current logo is rendered (including the header and footer).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-existing-fundgrowth-logo-asset-at-assets-generated-fundgrowth-logo-dim-512x192-png-with-the-user-uploaded-image-file-logo-png-and-ensure-all-places-that-render-the-current-logo-show-the-updated-image-including-the-header-footer-and-marketing-pages",
+      "title": "Replace the existing FUNDGROWTH logo asset at /assets/generated/fundgrowth-logo.dim_512x192.png with the user-uploaded image file logo.png, and ensure all places that render the current logo show the updated image (including the header, footer, and marketing pages).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a full bond-investment platform website like WintWealth, branded as FUNDGROWTH (accounts, bond listings, investment flow, dashboards, etc.)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Connect/deploy the FUNDGROWTH website to the domain fundgrowth.in (including DNS/setup as needed)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Add basic admin/seed capabilities for bond listings so the app is usable without external integrations: provide a backend method to initialize/seed a default set of sample bonds on first run, and ensure the UI has meaningful content after deployment.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Replace the current FUNDGROWTH logo on the website with the user-provided (attached) logo asset, updating the relevant header/brand locations.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "FUNDGROWTH",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

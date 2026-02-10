@@ -1,0 +1,24 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Replace FUNDGROWTH logo asset with uploaded logo.png",
+  "requirements": [
+    {
+      "id": "REQ-12",
+      "summary": "Overwrite the existing generated FUNDGROWTH logo asset with the uploaded logo.png so header, footer, and all marketing pages display the updated logo via the same immutable path.",
+      "acceptanceCriteria": [
+        "The static asset file frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png is updated to match the uploaded logo.png (no additional backend routing).",
+        "Site header renders the updated logo via src=\"/assets/generated/fundgrowth-logo.dim_512x192.png\" and it is visible on all pages where the header appears.",
+        "Site footer renders the updated logo via src=\"/assets/generated/fundgrowth-logo.dim_512x192.png\" and it is visible on all pages where the footer appears.",
+        "When deployed, the logo served at https://fundgrowth-7y2.caffeine.xyz/assets/generated/fundgrowth-logo.dim_512x192.png shows the updated image."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png",
+          "operation": "modify",
+          "description": "Replace/overwrite this static asset with the provided uploaded image (workspace asset: logo.png) while keeping the exact filename and path unchanged so all existing references (e.g., header/footer using src \"/assets/generated/fundgrowth-logo.dim_512x192.png\") automatically show the new logo."
+        }
+      ]
+    }
+  ]
+}
