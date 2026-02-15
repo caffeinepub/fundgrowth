@@ -1,109 +1,129 @@
 import { useState, useMemo } from 'react';
-import { useGetBondListings } from '@/hooks/useQueries';
-import BondCard from '../components/bonds/BondCard';
-import BondFilters from '../components/bonds/BondFilters';
-import { RiskTag } from '../backend';
+import { useGetBondListingsWithIds } from '@/hooks/useBonds';
+import BondCard from '@/components/bonds/BondCard';
+import BondFilters from '@/components/bonds/BondFilters';
+import GoldOfferingsSection from '@/components/bonds/GoldOfferingsSection';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AlertCircle, TrendingUp } from 'lucide-react';
+import type { BondListingWithId, RiskTag } from '../backend';
 
 export default function BondsPage() {
-  const { data: bonds, isLoading } = useGetBondListings();
+  const { data: bonds, isLoading, error } = useGetBondListingsWithIds();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRiskTags, setSelectedRiskTags] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState('coupon-desc');
+  const [sortBy, setSortBy] = useState('coupon-high');
+  const [selectedRiskTags, setSelectedRiskTags] = useState<RiskTag[]>([]);
 
   const filteredAndSortedBonds = useMemo(() => {
     if (!bonds) return [];
 
     let filtered = [...bonds];
 
-    // Search filter
-    if (searchQuery) {
+    // Apply search filter
+    if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((bond) =>
-        bond.issuer.toLowerCase().includes(query)
+        bond.listing.issuer.toLowerCase().includes(query)
       );
     }
 
-    // Risk tag filter
+    // Apply risk tag filter
     if (selectedRiskTags.length > 0) {
       filtered = filtered.filter((bond) =>
-        bond.riskTags.some((tag) => selectedRiskTags.includes(RiskTag[tag]))
+        bond.listing.riskTags.some((tag) => selectedRiskTags.includes(tag))
       );
     }
 
-    // Sort
+    // Apply sorting
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'coupon-desc':
-          return b.couponRate - a.couponRate;
-        case 'coupon-asc':
-          return a.couponRate - b.couponRate;
-        case 'tenure-asc':
-          return Number(a.tenure) - Number(b.tenure);
-        case 'tenure-desc':
-          return Number(b.tenure) - Number(a.tenure);
+        case 'coupon-high':
+          return b.listing.couponRate - a.listing.couponRate;
+        case 'coupon-low':
+          return a.listing.couponRate - b.listing.couponRate;
+        case 'tenure-short':
+          return Number(a.listing.tenure) - Number(b.listing.tenure);
+        case 'tenure-long':
+          return Number(b.listing.tenure) - Number(a.listing.tenure);
+        case 'investment-low':
+          return Number(a.listing.minInvestment) - Number(b.listing.minInvestment);
+        case 'investment-high':
+          return Number(b.listing.minInvestment) - Number(a.listing.minInvestment);
         default:
           return 0;
       }
     });
 
     return filtered;
-  }, [bonds, searchQuery, selectedRiskTags, sortBy]);
-
-  const handleRiskTagToggle = (tag: string) => {
-    setSelectedRiskTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
-
-  const handleClearFilters = () => {
-    setSearchQuery('');
-    setSelectedRiskTags([]);
-    setSortBy('coupon-desc');
-  };
+  }, [bonds, searchQuery, sortBy, selectedRiskTags]);
 
   return (
     <div className="py-12">
       <div className="container-custom">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold font-display mb-2">
-            Browse Bonds
-          </h1>
+          <h1 className="text-4xl font-bold font-display mb-4">Bond Catalog</h1>
           <p className="text-lg text-muted-foreground">
-            Explore our curated selection of high-quality corporate bonds.
+            Explore our curated selection of investment-grade bonds with attractive returns.
           </p>
         </div>
 
-        <div className="mb-8">
-          <BondFilters
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            selectedRiskTags={selectedRiskTags}
-            onRiskTagToggle={handleRiskTagToggle}
-            sortBy={sortBy}
-            onSortChange={setSortBy}
-            onClearFilters={handleClearFilters}
-          />
-        </div>
-
-        {isLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-96 bg-muted animate-pulse rounded-lg" />
-            ))}
-          </div>
-        ) : filteredAndSortedBonds.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-lg text-muted-foreground">
-              No bonds found matching your criteria.
-            </p>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredAndSortedBonds.map((bond, index) => (
-              <BondCard key={index} bond={bond} bondId={index + 1} />
-            ))}
-          </div>
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Failed to load bond listings. Please try again later.
+            </AlertDescription>
+          </Alert>
         )}
+
+        <div className="grid lg:grid-cols-4 gap-8">
+          <aside className="lg:col-span-1">
+            <BondFilters
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+              selectedRiskTags={selectedRiskTags}
+              onRiskTagsChange={setSelectedRiskTags}
+            />
+          </aside>
+
+          <main className="lg:col-span-3">
+            {isLoading ? (
+              <div className="grid md:grid-cols-2 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="space-y-4">
+                    <Skeleton className="h-48 w-full" />
+                  </div>
+                ))}
+              </div>
+            ) : filteredAndSortedBonds.length === 0 ? (
+              <div className="text-center py-12">
+                <TrendingUp className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No bonds found</h3>
+                <p className="text-muted-foreground">
+                  {searchQuery || selectedRiskTags.length > 0
+                    ? 'Try adjusting your filters to see more results.'
+                    : 'No bond listings are currently available.'}
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4 text-sm text-muted-foreground">
+                  Showing {filteredAndSortedBonds.length} bond{filteredAndSortedBonds.length !== 1 ? 's' : ''}
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {filteredAndSortedBonds.map((bond) => (
+                    <BondCard key={bond.bondId} bond={bond} />
+                  ))}
+                </div>
+              </>
+            )}
+
+            <GoldOfferingsSection />
+          </main>
+        </div>
       </div>
     </div>
   );

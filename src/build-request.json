@@ -1,44 +1,41 @@
 {
   "kind": "build_request",
-  "title": "Replace FUNDGROWTH site logo with uploaded logo.png",
+  "title": "Add Gold product list section below Bonds page",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-12",
-      "text": "Replace the existing FUNDGROWTH logo asset at /assets/generated/fundgrowth-logo.dim_512x192.png with the user-uploaded image file logo.png, and ensure all places that render the current logo show the updated image (including the header, footer, and marketing pages).",
+      "id": "REQ-1",
+      "text": "On the Bonds page (route \"/bonds\"), add a new section below the existing bond catalog content that lists the following offerings exactly as provided, using English text (no emojis):\n\n1) GoldSecure Capital Protection\n- \"10.75% p.a. | 1 Year | Annual | Low Risk\"\n\n2) GoldShield Regular Income\n- \"12.50% p.a. | Monthly | 2 Years\"\n\n3) GoldGrowth Wealth Builder\n- \"14.25% p.a. | Compounding | 3 Years\"\n\n4) GoldPlus Long Term Wealth\n- \"15.75% p.a. | Compounding | 5 Years\"\n\n5) GoldPlatinum WealthSecure (Premium)\n- \"17.50% p.a. | Compounding | HNI | ₹5L+\"",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "change this logo to uploded",
-          "header, footer, marketing pages",
-          "2",
-          "https://fundgrowth-7y2.caffeine.xyz/assets/generated/fundgrowth-logo.dim_512x192.png"
+          "List below Bond in Website\n\n1. GoldSecure Capital Protection\n\n10.75% p.a. | 1 Year | Annual | Low Risk\n\n🟡 GoldShield Regular Income\n\n12.50% p.a. | Monthly | 2 Years\n\n🟡 GoldGrowth Wealth Builder\n\n14.25% p.a. | Compounding | 3 Years\n\n🟡 GoldPlus Long Term Wealth\n\n15.75% p.a. | Compounding | 5 Years\n\n🟡 GoldPlatinum WealthSecure (Premium)\n\n17.50% p.a. | Compounding | HNI | ₹5L+"
         ]
       },
       "acceptanceCriteria": [
-        "The static asset file frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png is updated to match the uploaded logo.png (no additional backend routing).",
-        "Site header renders the updated logo via src=\"/assets/generated/fundgrowth-logo.dim_512x192.png\" and it is visible on all pages where the header appears.",
-        "Site footer renders the updated logo via src=\"/assets/generated/fundgrowth-logo.dim_512x192.png\" and it is visible on all pages where the footer appears.",
-        "When deployed, the logo served at https://fundgrowth-7y2.caffeine.xyz/assets/generated/fundgrowth-logo.dim_512x192.png shows the updated image."
+        "Visiting /bonds shows an additional section beneath the existing bond catalog area (below the main grid with filters + bond cards).",
+        "The section renders 5 items with the exact names and the exact detail strings specified (including punctuation, spacing around pipes, and currency symbol ₹).",
+        "No emojis are displayed in this section; use standard UI elements (e.g., bullet, dot, badge) instead of 🟡.",
+        "The section displays correctly in both light and dark themes and is responsive on mobile and desktop."
       ]
     }
   ],
   "constraints": [
-    "Frontend immutable paths must not be edited: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
-    "Keep all user-facing text in English."
+    "Do not modify any files under frontend/src/components/ui (read-only UI component sources).",
+    "Do not modify files listed under frontend.immutablePaths in SYSTEM_CONTEXT.",
+    "Do not change backend canister interfaces or persisted state for this request (static frontend content only)."
   ],
   "nonGoals": [
-    "Do not change any other branding assets or illustrations besides the logo.",
-    "Do not change the app’s color theme, layout, routes, or backend logic as part of this request."
+    "Adding new backend data models or endpoints to store these offerings.",
+    "Making these offerings purchasable or adding an investment flow for them.",
+    "Changing existing bond catalog filtering/sorting behavior."
   ],
   "imageRequirements": {
     "required": [],
-    "edits": [
-      "Replace the logo with the uploaded image (fundgrowth-logo.dim_512x192.png > fundgrowth-logo.dim_512x192.png)"
-    ]
+    "edits": []
   },
   "userProfileUpdate": {
     "goalsToAdd": [],

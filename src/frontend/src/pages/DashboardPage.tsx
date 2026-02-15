@@ -1,10 +1,9 @@
 import AuthGate from '../components/auth/AuthGate';
-import { useGetUserPortfolio, useGetBondListings } from '@/hooks/useQueries';
+import { useGetUserPortfolio } from '@/hooks/useQueries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TrendingUp, Wallet, PieChart } from 'lucide-react';
 import { formatCurrency, formatDateTime } from '@/lib/formatters';
-import { Link } from '@tanstack/react-router';
 
 export default function DashboardPage() {
   return (
@@ -16,13 +15,6 @@ export default function DashboardPage() {
 
 function DashboardPageContent() {
   const { data: portfolio, isLoading: portfolioLoading } = useGetUserPortfolio();
-  const { data: bonds } = useGetBondListings();
-
-  const getBondName = (bondId: number): string => {
-    if (!bonds) return `Bond #${bondId}`;
-    const bond = bonds[bondId - 1];
-    return bond ? bond.issuer : `Bond #${bondId}`;
-  };
 
   if (portfolioLoading) {
     return (
@@ -45,7 +37,7 @@ function DashboardPageContent() {
             Investment Dashboard
           </h1>
           <p className="text-lg text-muted-foreground">
-            Track your bond investments and portfolio performance.
+            Track your investments and portfolio performance.
           </p>
         </div>
 
@@ -89,42 +81,29 @@ function DashboardPageContent() {
             {activeInvestments.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground mb-4">You haven't made any investments yet.</p>
-                <Link
-                  to="/bonds"
-                  className="text-primary hover:underline font-medium"
-                >
-                  Browse available bonds
-                </Link>
+                <p className="text-sm text-muted-foreground">
+                  Check back soon for new investment opportunities.
+                </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Bond</TableHead>
+                      <TableHead>Investment ID</TableHead>
                       <TableHead>Amount</TableHead>
                       <TableHead>Invested On</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {activeInvestments.map((investment, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell>
-                          <Link
-                            to="/bonds/$bondId"
-                            params={{ bondId: String(investment.bondId) }}
-                            className="font-medium hover:text-primary transition-colors"
-                          >
-                            {getBondName(investment.bondId)}
-                          </Link>
+                    {activeInvestments.map((investment, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">
+                          #{investment.bondId}
                         </TableCell>
-                        <TableCell className="font-semibold">
-                          {formatCurrency(investment.amount)}
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {formatDateTime(investment.investedOn)}
-                        </TableCell>
+                        <TableCell>{formatCurrency(investment.amount)}</TableCell>
+                        <TableCell>{formatDateTime(investment.investedOn)}</TableCell>
                         <TableCell>
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                             Active

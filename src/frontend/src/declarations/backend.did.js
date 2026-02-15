@@ -8,11 +8,6 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const UserRole = IDL.Variant({
-  'admin' : IDL.Null,
-  'user' : IDL.Null,
-  'guest' : IDL.Null,
-});
 export const Diversification = IDL.Variant({
   'investmentAmount' : IDL.Nat,
   'riskLevel' : IDL.Text,
@@ -60,15 +55,10 @@ export const BondListing = IDL.Record({
   'faceValue' : IDL.Nat,
   'repaymentFrequency' : RepaymentFrequency,
 });
-export const UserProfile = IDL.Record({
-  'name' : IDL.Text,
-  'email' : IDL.Text,
-  'kycStatus' : IDL.Variant({
-    'verified' : IDL.Null,
-    'pending' : IDL.Null,
-    'rejected' : IDL.Null,
-  }),
-  'phoneNumber' : IDL.Text,
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
 });
 export const RepaymentStatus = IDL.Variant({
   'pending' : IDL.Null,
@@ -96,12 +86,38 @@ export const PortfolioSummary = IDL.Record({
   'activeHoldings' : IDL.Vec(Investment),
   'investmentDistribution' : Diversification,
 });
+export const BondListingWithId = IDL.Record({
+  'listing' : BondListing,
+  'bondId' : IDL.Nat32,
+});
+export const UserProfile = IDL.Record({
+  'name' : IDL.Text,
+  'email' : IDL.Text,
+  'kycStatus' : IDL.Variant({
+    'verified' : IDL.Null,
+    'pending' : IDL.Null,
+    'rejected' : IDL.Null,
+  }),
+  'phoneNumber' : IDL.Text,
+});
 
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'addBondListing' : IDL.Func([IDL.Nat32, BondListing], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'bulkUpdateCouponRates' : IDL.Func([], [IDL.Nat], []),
+  'getAdminUserPortfolio' : IDL.Func(
+      [IDL.Principal],
+      [PortfolioSummary],
+      ['query'],
+    ),
   'getBondListing' : IDL.Func([IDL.Nat32], [IDL.Opt(BondListing)], ['query']),
   'getBondListings' : IDL.Func([], [IDL.Vec(BondListing)], ['query']),
+  'getBondListingsWithIds' : IDL.Func(
+      [],
+      [IDL.Vec(BondListingWithId)],
+      ['query'],
+    ),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getUserPortfolio' : IDL.Func([], [PortfolioSummary], ['query']),
@@ -110,20 +126,17 @@ export const idlService = IDL.Service({
       [IDL.Opt(UserProfile)],
       ['query'],
     ),
-  'initializeDefaultBonds' : IDL.Func([], [], []),
   'invest' : IDL.Func([IDL.Nat32, IDL.Nat, Diversification], [], []),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'removeBondListing' : IDL.Func([IDL.Nat32], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'updateBondListing' : IDL.Func([IDL.Nat32, BondListing], [], []),
+  'updateBondListingDates' : IDL.Func([], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const UserRole = IDL.Variant({
-    'admin' : IDL.Null,
-    'user' : IDL.Null,
-    'guest' : IDL.Null,
-  });
   const Diversification = IDL.Variant({
     'investmentAmount' : IDL.Nat,
     'riskLevel' : IDL.Text,
@@ -171,15 +184,10 @@ export const idlFactory = ({ IDL }) => {
     'faceValue' : IDL.Nat,
     'repaymentFrequency' : RepaymentFrequency,
   });
-  const UserProfile = IDL.Record({
-    'name' : IDL.Text,
-    'email' : IDL.Text,
-    'kycStatus' : IDL.Variant({
-      'verified' : IDL.Null,
-      'pending' : IDL.Null,
-      'rejected' : IDL.Null,
-    }),
-    'phoneNumber' : IDL.Text,
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
   });
   const RepaymentStatus = IDL.Variant({
     'pending' : IDL.Null,
@@ -207,12 +215,38 @@ export const idlFactory = ({ IDL }) => {
     'activeHoldings' : IDL.Vec(Investment),
     'investmentDistribution' : Diversification,
   });
+  const BondListingWithId = IDL.Record({
+    'listing' : BondListing,
+    'bondId' : IDL.Nat32,
+  });
+  const UserProfile = IDL.Record({
+    'name' : IDL.Text,
+    'email' : IDL.Text,
+    'kycStatus' : IDL.Variant({
+      'verified' : IDL.Null,
+      'pending' : IDL.Null,
+      'rejected' : IDL.Null,
+    }),
+    'phoneNumber' : IDL.Text,
+  });
   
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'addBondListing' : IDL.Func([IDL.Nat32, BondListing], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'bulkUpdateCouponRates' : IDL.Func([], [IDL.Nat], []),
+    'getAdminUserPortfolio' : IDL.Func(
+        [IDL.Principal],
+        [PortfolioSummary],
+        ['query'],
+      ),
     'getBondListing' : IDL.Func([IDL.Nat32], [IDL.Opt(BondListing)], ['query']),
     'getBondListings' : IDL.Func([], [IDL.Vec(BondListing)], ['query']),
+    'getBondListingsWithIds' : IDL.Func(
+        [],
+        [IDL.Vec(BondListingWithId)],
+        ['query'],
+      ),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getUserPortfolio' : IDL.Func([], [PortfolioSummary], ['query']),
@@ -221,10 +255,12 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Opt(UserProfile)],
         ['query'],
       ),
-    'initializeDefaultBonds' : IDL.Func([], [], []),
     'invest' : IDL.Func([IDL.Nat32, IDL.Nat, Diversification], [], []),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'removeBondListing' : IDL.Func([IDL.Nat32], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'updateBondListing' : IDL.Func([IDL.Nat32, BondListing], [], []),
+    'updateBondListingDates' : IDL.Func([], [], []),
   });
 };
 

@@ -13,6 +13,21 @@ export interface PortfolioSummary {
     activeHoldings: Array<Investment>;
     investmentDistribution: Diversification;
 }
+export interface Investment {
+    repayments: Array<Repayment>;
+    investedOn: Time;
+    bondId: number;
+    isActive: boolean;
+    investmentPlan: Diversification;
+    amount: bigint;
+}
+export type CouponType = {
+    __kind__: "zeroCoupon";
+    zeroCoupon: null;
+} | {
+    __kind__: "coupon";
+    coupon: bigint;
+};
 export interface BondListing {
     diversification: Diversification;
     status: BondStatus;
@@ -29,21 +44,6 @@ export interface BondListing {
     faceValue: bigint;
     repaymentFrequency: RepaymentFrequency;
 }
-export interface Investment {
-    repayments: Array<Repayment>;
-    investedOn: Time;
-    bondId: number;
-    isActive: boolean;
-    investmentPlan: Diversification;
-    amount: bigint;
-}
-export type CouponType = {
-    __kind__: "zeroCoupon";
-    zeroCoupon: null;
-} | {
-    __kind__: "coupon";
-    coupon: bigint;
-};
 export type BondStatus = {
     __kind__: "active";
     active: null;
@@ -70,6 +70,10 @@ export interface Repayment {
     principalComponent: bigint;
     amount: bigint;
     interestAmount: bigint;
+}
+export interface BondListingWithId {
+    listing: BondListing;
+    bondId: number;
 }
 export interface UserProfile {
     name: string;
@@ -110,15 +114,21 @@ export enum Variant_verified_pending_rejected {
     rejected = "rejected"
 }
 export interface backendInterface {
+    addBondListing(bondId: number, listing: BondListing): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    bulkUpdateCouponRates(): Promise<bigint>;
+    getAdminUserPortfolio(user: Principal): Promise<PortfolioSummary>;
     getBondListing(bondId: number): Promise<BondListing | null>;
     getBondListings(): Promise<Array<BondListing>>;
+    getBondListingsWithIds(): Promise<Array<BondListingWithId>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getUserPortfolio(): Promise<PortfolioSummary>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
-    initializeDefaultBonds(): Promise<void>;
     invest(bondId: number, amount: bigint, diversification: Diversification): Promise<void>;
     isCallerAdmin(): Promise<boolean>;
+    removeBondListing(bondId: number): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    updateBondListing(bondId: number, listing: BondListing): Promise<void>;
+    updateBondListingDates(): Promise<void>;
 }

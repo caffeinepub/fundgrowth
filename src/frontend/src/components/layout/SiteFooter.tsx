@@ -18,14 +18,14 @@ export default function SiteFooter() {
               className="h-8 w-auto"
             />
             <p className="text-sm text-muted-foreground">
-              Invest in bonds with confidence. Secure, transparent, and accessible.
+              Invest with confidence. Secure, transparent, and accessible financial products.
             </p>
           </div>
 
           <div>
             <h3 className="font-semibold mb-3">Platform</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/bonds" className="hover:text-foreground transition-colors">Browse Bonds</Link></li>
+              <li><Link to="/bonds" className="hover:text-foreground transition-colors">Bonds</Link></li>
               <li><Link to="/how-it-works" className="hover:text-foreground transition-colors">How it Works</Link></li>
               <li><Link to="/dashboard" className="hover:text-foreground transition-colors">Dashboard</Link></li>
             </ul>

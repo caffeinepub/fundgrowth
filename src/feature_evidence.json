@@ -2,9 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-existing-fundgrowth-logo-asset-at-assets-generated-fundgrowth-logo-dim-512x192-png-with-the-user-uploaded-image-file-logo-png-and-ensure-all-places-that-render-the-current-logo-show-the-updated-image-including-the-header-footer-and-marketing-pages",
-      "featureTitle": "Replace the existing FUNDGROWTH logo asset at /assets/generated/fundgrowth-logo.dim_512x192.png with the user-uploaded image file logo.png, and ensure all places that render the current logo show the updated image (including the header, footer, and marketing pages).",
-      "files": [],
+      "featureId": "feature-on-the-bonds-page-route-bonds-add-a-new-section-below-the-existing-bond-catalog-content-that-lists-the-following-offerings-exactly-as-provided-using-english-text-no-emojis-1-goldsecure-capital-protection-10-75-p-a-1-year-annual-low-risk-2-goldshield-regular-income-12-50-p-a-monthly-2-years-3-goldgrowth-wealth-builder-14-25-p-a-compounding-3-years-4-goldplus-long-term-wealth-15-75-p-a-compounding-5-years-5-goldplatinum-wealthsecure-premium-17-50-p-a-compounding-hni-5l",
+      "featureTitle": "On the Bonds page (route \"/bonds\"), add a new section below the existing bond catalog content that lists the following offerings exactly as provided, using English text (no emojis):\n\n1) GoldSecure Capital Protection\n- \"10.75% p.a. | 1 Year | Annual | Low Risk\"\n\n2) GoldShield Regular Income\n- \"12.50% p.a. | Monthly | 2 Years\"\n\n3) GoldGrowth Wealth Builder\n- \"14.25% p.a. | Compounding | 3 Years\"\n\n4) GoldPlus Long Term Wealth\n- \"15.75% p.a. | Compounding | 5 Years\"\n\n5) GoldPlatinum WealthSecure (Premium)\n- \"17.50% p.a. | Compounding | HNI | ₹5L+\"",
+      "files": [
+        "frontend/src/components/bonds/GoldOfferingsSection.tsx",
+        "frontend/src/pages/BondsPage.tsx"
+      ],
       "components": [
         "authorization@4.0.0",
         "core-infrastructure@1.0.2",
@@ -14,7 +17,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-12"
+        "REQ-1"
       ],
       "confidence": "high"
     }

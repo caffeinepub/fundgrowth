@@ -26,6 +26,10 @@ export interface BondListing {
   'faceValue' : bigint,
   'repaymentFrequency' : RepaymentFrequency,
 }
+export interface BondListingWithId {
+  'listing' : BondListing,
+  'bondId' : number,
+}
 export type BondStatus = { 'active' : null } |
   { 'fullyRedeemed' : null } |
   { 'matured' : Time } |
@@ -82,17 +86,23 @@ export type UserRole = { 'admin' : null } |
   { 'guest' : null };
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'addBondListing' : ActorMethod<[number, BondListing], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'bulkUpdateCouponRates' : ActorMethod<[], bigint>,
+  'getAdminUserPortfolio' : ActorMethod<[Principal], PortfolioSummary>,
   'getBondListing' : ActorMethod<[number], [] | [BondListing]>,
   'getBondListings' : ActorMethod<[], Array<BondListing>>,
+  'getBondListingsWithIds' : ActorMethod<[], Array<BondListingWithId>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getUserPortfolio' : ActorMethod<[], PortfolioSummary>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
-  'initializeDefaultBonds' : ActorMethod<[], undefined>,
   'invest' : ActorMethod<[number, bigint, Diversification], undefined>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
+  'removeBondListing' : ActorMethod<[number], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'updateBondListing' : ActorMethod<[number, BondListing], undefined>,
+  'updateBondListingDates' : ActorMethod<[], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

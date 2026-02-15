@@ -6,8 +6,11 @@ import Nat16 "mo:core/Nat16";
 import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
 import Order "mo:core/Order";
+import Iter "mo:core/Iter";
 import AccessControl "authorization/access-control";
 import MixinAuthorization "authorization/MixinAuthorization";
+
+
 
 actor {
   let accessControlState = AccessControl.initState();
@@ -73,13 +76,14 @@ actor {
     kycStatus : { #pending; #verified; #rejected };
   };
 
-  type bondsMap = Map.Map<Nat32, BondListing>;
-  type userInvestmentsMap = Map.Map<Principal, [Investment]>;
-  type userProfilesMap = Map.Map<Principal, UserProfile>;
+  public type BondListingWithId = {
+    bondId : Nat32;
+    listing : BondListing;
+  };
 
-  let bonds : bondsMap = Map.empty<Nat32, BondListing>();
-  let userInvestments : userInvestmentsMap = Map.empty<Principal, [Investment]>();
-  let userProfiles : userProfilesMap = Map.empty<Principal, UserProfile>();
+  let bonds = Map.empty<Nat32, BondListing>();
+  let userInvestments = Map.empty<Principal, [Investment]>();
+  let userProfiles = Map.empty<Principal, UserProfile>();
 
   module BondListing {
     public func compare(a : BondListing, b : BondListing) : Order.Order {
@@ -87,8 +91,25 @@ actor {
     };
   };
 
-  func toBondListingArray(map : bondsMap) : [BondListing] {
+  func toBondListingArray(map : Map.Map<Nat32, BondListing>) : [BondListing] {
     map.values().toArray();
+  };
+
+  // Update bond listing launch dates
+  public shared ({ caller }) func updateBondListingDates() : async () {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
+      Runtime.trap("Unauthorized access, admin role required! ");
+    };
+    // New date: 1 February 2026 (interpreted as DD-MM-YYYY)
+    let updatedBonds = bonds.map<Nat32, BondListing, BondListing>(
+      func(_id, bond) {
+        { bond with launchDate = 177528660000000000 };
+      }
+    );
+    bonds.clear();
+    for ((k, v) in updatedBonds.entries()) {
+      bonds.add(k, v);
+    };
   };
 
   // User Profile Management
@@ -113,27 +134,103 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Bond Listings (Public - no auth required)
+  // Bond Listings (Public - no auth required for viewing)
   public query ({ caller }) func getBondListings() : async [BondListing] {
     toBondListingArray(bonds);
+  };
+
+  // New backend query that exposes bond IDs
+  public query ({ caller }) func getBondListingsWithIds() : async [BondListingWithId] {
+    bonds.toArray().map(func((id, listing)) { { bondId = id; listing } });
   };
 
   public query ({ caller }) func getBondListing(bondId : Nat32) : async ?BondListing {
     bonds.get(bondId);
   };
 
-  // Investment Operations (User-only)
+  // Admin-only: Add new bond listing
+  public shared ({ caller }) func addBondListing(bondId : Nat32, listing : BondListing) : async () {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
+      Runtime.trap("Unauthorized: Only admins can add bond listings");
+    };
+    bonds.add(bondId, listing);
+  };
+
+  // Admin-only: Update bond listing
+  public shared ({ caller }) func updateBondListing(bondId : Nat32, listing : BondListing) : async () {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
+      Runtime.trap("Unauthorized: Only admins can update bond listings");
+    };
+    switch (bonds.get(bondId)) {
+      case (null) { Runtime.trap("Bond not found") };
+      case (?_) { bonds.add(bondId, listing) };
+    };
+  };
+
+  // Admin-only: Remove bond listing
+  public shared ({ caller }) func removeBondListing(bondId : Nat32) : async () {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
+      Runtime.trap("Unauthorized: Only admins can remove bond listings");
+    };
+    bonds.remove(bondId);
+  };
+
+  // Admin-only: Bulk update coupon rates
+  public shared ({ caller }) func bulkUpdateCouponRates() : async Nat {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
+      Runtime.trap("Unauthorized: Only admins can perform bulk updates");
+    };
+
+    let oldThreshold : Nat16 = 1245; // 12.45%
+    let newRate : Nat16 = 1528; // 15.28%
+    var updatedCount : Nat = 0;
+
+    for ((bondId, bond) in bonds.entries()) {
+      if (bond.couponRate >= oldThreshold) {
+        let updatedBond = {
+          bond with couponRate = newRate
+        };
+        bonds.add(bondId, updatedBond);
+        updatedCount += 1;
+      };
+    };
+
+    updatedCount;
+  };
+
+  // Investment Operations (User-only with KYC verification)
   public shared ({ caller }) func invest(bondId : Nat32, amount : Nat, diversification : Diversification) : async () {
     if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
       Runtime.trap("Unauthorized: Only users can invest");
     };
+
+    // Verify KYC status
+    let profile = switch (userProfiles.get(caller)) {
+      case (null) { Runtime.trap("User profile not found. Please complete your profile first.") };
+      case (?p) { p };
+    };
+
+    switch (profile.kycStatus) {
+      case (#verified) { /* OK to proceed */ };
+      case (#pending) { Runtime.trap("KYC verification pending. Please wait for approval.") };
+      case (#rejected) { Runtime.trap("KYC verification rejected. Please contact support.") };
+    };
+
     let bond = switch (bonds.get(bondId)) {
       case (null) { Runtime.trap("Bond not found") };
       case (?bond) { bond };
     };
+
+    // Verify bond is active
+    switch (bond.status) {
+      case (#active()) { /* OK to proceed */ };
+      case (_) { Runtime.trap("Bond is not available for investment") };
+    };
+
     if (amount < bond.minInvestment) {
       Runtime.trap("Investment below minimum amount");
     };
+
     let investment = {
       bondId;
       amount;
@@ -147,41 +244,9 @@ actor {
       case (null) { [] };
       case (?existing) { existing };
     };
+
     let newInvestments = currentInvestments.concat([investment]);
     userInvestments.add(caller, newInvestments);
-  };
-
-  // Admin Operations
-  public shared ({ caller }) func initializeDefaultBonds() : async () {
-    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
-      Runtime.trap("Unauthorized: Only admins can initialize bonds");
-    };
-
-    let defaultBonds : [(Nat32, BondListing)] = [
-      (
-        1,
-        {
-          issuer = "AgroFintech Ltd.";
-          rating = 'A';
-          tenure = 24;
-          couponRate = 850; // 8.5%
-          couponType = #coupon(780);
-          minInvestment = 10000;
-          ratingAgency = "CRISIL";
-          repaymentFrequency = #quarterly;
-          redemptionType = #bulletRepayment;
-          riskTags = [#secured];
-          status = #active(());
-          faceValue = 1000000;
-          launchDate = Time.now();
-          diversification = #investmentAmount(50000);
-        },
-      ),
-    ];
-
-    for ((id, bond) in defaultBonds.values()) {
-      bonds.add(id, bond);
-    };
   };
 
   // Portfolio Management (User-only)
@@ -189,10 +254,37 @@ actor {
     if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
       Runtime.trap("Unauthorized: Only users can view portfolio");
     };
+
     let investments = switch (userInvestments.get(caller)) {
       case (null) { [] };
       case (?list) { list };
     };
+
+    let totalInvested = investments.foldLeft(0, func(acc, inv) { acc + inv.amount });
+
+    let investmentDistribution : Diversification = switch (getInvestmentPlan(investments)) {
+      case (?plan) { plan };
+      case (null) { #investmentAmount(0) };
+    };
+
+    {
+      activeHoldings = investments;
+      totalInvested;
+      investmentDistribution;
+    };
+  };
+
+  // Admin-only: View any user's portfolio
+  public query ({ caller }) func getAdminUserPortfolio(user : Principal) : async PortfolioSummary {
+    if (not AccessControl.hasPermission(accessControlState, caller, #admin)) {
+      Runtime.trap("Unauthorized: Only admins can view other users' portfolios");
+    };
+
+    let investments = switch (userInvestments.get(user)) {
+      case (null) { [] };
+      case (?list) { list };
+    };
+
     let totalInvested = investments.foldLeft(0, func(acc, inv) { acc + inv.amount });
 
     let investmentDistribution : Diversification = switch (getInvestmentPlan(investments)) {

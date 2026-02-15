@@ -1,22 +1,27 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Replace FUNDGROWTH logo asset with uploaded logo.png",
+  "title": "Add Gold offerings section to Bonds page",
   "requirements": [
     {
-      "id": "REQ-12",
-      "summary": "Overwrite the existing generated FUNDGROWTH logo asset with the uploaded logo.png so header, footer, and all marketing pages display the updated logo via the same immutable path.",
+      "id": "REQ-1",
+      "summary": "Add a static Gold product list section beneath the existing bond catalog grid on the /bonds page with exactly 5 offerings and their provided detail strings (no emojis), styled responsively for light/dark themes.",
       "acceptanceCriteria": [
-        "The static asset file frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png is updated to match the uploaded logo.png (no additional backend routing).",
-        "Site header renders the updated logo via src=\"/assets/generated/fundgrowth-logo.dim_512x192.png\" and it is visible on all pages where the header appears.",
-        "Site footer renders the updated logo via src=\"/assets/generated/fundgrowth-logo.dim_512x192.png\" and it is visible on all pages where the footer appears.",
-        "When deployed, the logo served at https://fundgrowth-7y2.caffeine.xyz/assets/generated/fundgrowth-logo.dim_512x192.png shows the updated image."
+        "Visiting /bonds shows an additional section beneath the existing bond catalog area (below the main grid with filters + bond cards).",
+        "The section renders 5 items with the exact names and the exact detail strings specified (including punctuation, spacing around pipes, and currency symbol ₹).",
+        "No emojis are displayed in this section; use standard UI elements (e.g., bullet, dot, badge) instead of 🟡.",
+        "The section displays correctly in both light and dark themes and is responsive on mobile and desktop."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png",
+          "path": "frontend/src/components/bonds/GoldOfferingsSection.tsx",
+          "operation": "create",
+          "description": "Create a reusable, static Gold offerings section component that renders the 5 offerings (title + exact detail string) in a responsive layout using existing Tailwind/theme tokens (e.g., text-foreground, text-muted-foreground, bg-card, border) and a non-emoji marker (e.g., dot/bullet). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/BondsPage.tsx",
           "operation": "modify",
-          "description": "Replace/overwrite this static asset with the provided uploaded image (workspace asset: logo.png) while keeping the exact filename and path unchanged so all existing references (e.g., header/footer using src \"/assets/generated/fundgrowth-logo.dim_512x192.png\") automatically show the new logo."
+          "description": "Render the new GoldOfferingsSection below the existing bond catalog grid (after the filters + bond cards area) on the /bonds page, ensuring spacing and responsiveness without changing existing bond catalog behavior. Verify the component's usage instructions before implementing."
         }
       ]
     }

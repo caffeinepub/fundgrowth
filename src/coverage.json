@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-10T17:26:19.458Z",
+  "generatedAt": "2026-02-15T07:24:50.748Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,24 +11,27 @@
     "implemented": 1,
     "items": [
       {
-        "id": "REQ-12",
-        "summary": "Replace the existing FUNDGROWTH logo asset at /assets/generated/fundgrowth-logo.dim_512x192.png with the user-uploaded image file logo.png, and ensure all places that render the current logo show the updated image (including the header, footer, and marketing pages).",
+        "id": "REQ-1",
+        "summary": "On the Bonds page (route \"/bonds\"), add a new section below the existing bond catalog content that lists the following offerings exactly as provided, using English text (no emojis):\n\n1) GoldSecure Capital Protection\n- \"10.75% p.a. | 1 Year | Annual | Low Risk\"\n\n2) GoldShield Regular Income\n- \"12.50% p.a. | Monthly | 2 Years\"\n\n3) GoldGrowth Wealth Builder\n- \"14.25% p.a. | Compounding | 3 Years\"\n\n4) GoldPlus Long Term Wealth\n- \"15.75% p.a. | Compounding | 5 Years\"\n\n5) GoldPlatinum WealthSecure (Premium)\n- \"17.50% p.a. | Compounding | HNI | ₹5L+\"",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png"
+          "frontend/src/components/bonds/GoldOfferingsSection.tsx",
+          "frontend/src/pages/BondsPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png"
+          "frontend/src/components/bonds/GoldOfferingsSection.tsx",
+          "frontend/src/pages/BondsPage.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
-    "build-template/README.md",
     "feature_evidence.json",
+    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/fundgrowth-logo.dim_512x192.png",
+    "frontend/src/components/bonds/GoldOfferingsSection.tsx",
+    "frontend/src/pages/BondsPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

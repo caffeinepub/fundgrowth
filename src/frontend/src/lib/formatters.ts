@@ -32,6 +32,7 @@ export function formatDate(timestamp: bigint): string {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
+    timeZone: 'UTC',
   }).format(date);
 }
 
@@ -43,6 +44,7 @@ export function formatDateTime(timestamp: bigint): string {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: 'UTC',
   }).format(date);
 }
 

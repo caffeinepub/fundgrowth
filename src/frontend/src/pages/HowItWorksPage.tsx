@@ -10,18 +10,18 @@ export default function HowItWorksPage() {
     },
     {
       icon: Search,
-      title: 'Browse Bonds',
-      description: 'Explore our curated selection of high-quality corporate bonds with detailed information on ratings, returns, and tenures.',
+      title: 'Explore Opportunities',
+      description: 'Browse our curated selection of high-quality investment products with detailed information on ratings, returns, and tenures.',
     },
     {
       icon: DollarSign,
       title: 'Invest',
-      description: 'Choose a bond that matches your investment goals and invest with amounts starting from ₹10,000.',
+      description: 'Choose an offering that matches your investment goals with amounts starting from ₹10,000.',
     },
     {
       icon: TrendingUp,
       title: 'Track & Earn',
-      description: 'Monitor your investments through your dashboard and receive regular coupon payments as per the bond schedule.',
+      description: 'Monitor your investments through your dashboard and receive regular payments as per the schedule.',
     },
   ];
 
@@ -33,7 +33,7 @@ export default function HowItWorksPage() {
             How FUNDGROWTH Works
           </h1>
           <p className="text-lg text-muted-foreground">
-            Start investing in bonds in four simple steps
+            Start investing in four simple steps
           </p>
         </div>
 
@@ -62,18 +62,18 @@ export default function HowItWorksPage() {
 
         <Card className="bg-primary text-primary-foreground">
           <CardContent className="p-8 text-center">
-            <h2 className="text-2xl font-bold mb-4">Why Invest in Bonds?</h2>
+            <h2 className="text-2xl font-bold mb-4">Why Invest with FUNDGROWTH?</h2>
             <div className="grid md:grid-cols-3 gap-6 text-left">
               <div>
                 <h3 className="font-semibold mb-2">Fixed Returns</h3>
                 <p className="text-sm opacity-90">
-                  Earn predictable returns with fixed coupon rates, unlike volatile equity markets.
+                  Earn predictable returns with fixed rates, unlike volatile equity markets.
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Lower Risk</h3>
                 <p className="text-sm opacity-90">
-                  Bonds are generally less risky than stocks, especially those with high credit ratings.
+                  Fixed-income products are generally less risky than stocks, especially those with high credit ratings.
                 </p>
               </div>
               <div>
