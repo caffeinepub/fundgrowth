@@ -1,50 +1,75 @@
 {
   "kind": "build_request",
-  "title": "Add Gold product list section below Bonds page",
+  "title": "Add bond list quick links to the main menu",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "On the Bonds page (route \"/bonds\"), add a new section below the existing bond catalog content that lists the following offerings exactly as provided, using English text (no emojis):\n\n1) GoldSecure Capital Protection\n- \"10.75% p.a. | 1 Year | Annual | Low Risk\"\n\n2) GoldShield Regular Income\n- \"12.50% p.a. | Monthly | 2 Years\"\n\n3) GoldGrowth Wealth Builder\n- \"14.25% p.a. | Compounding | 3 Years\"\n\n4) GoldPlus Long Term Wealth\n- \"15.75% p.a. | Compounding | 5 Years\"\n\n5) GoldPlatinum WealthSecure (Premium)\n- \"17.50% p.a. | Compounding | HNI | ₹5L+\"",
+      "text": "Update the main navigation in the site header to include quick-access entries for individual bond listings (each entry should navigate directly to that bond’s detail route \"/bonds/$bondId\"). The quick-access entries must appear in both desktop navigation and the mobile menu.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "List below Bond in Website\n\n1. GoldSecure Capital Protection\n\n10.75% p.a. | 1 Year | Annual | Low Risk\n\n🟡 GoldShield Regular Income\n\n12.50% p.a. | Monthly | 2 Years\n\n🟡 GoldGrowth Wealth Builder\n\n14.25% p.a. | Compounding | 3 Years\n\n🟡 GoldPlus Long Term Wealth\n\n15.75% p.a. | Compounding | 5 Years\n\n🟡 GoldPlatinum WealthSecure (Premium)\n\n17.50% p.a. | Compounding | HNI | ₹5L+"
+          "YES",
+          "Your bond list is now live — want these entries added to the main menu for quicker access?"
         ]
       },
       "acceptanceCriteria": [
-        "Visiting /bonds shows an additional section beneath the existing bond catalog area (below the main grid with filters + bond cards).",
-        "The section renders 5 items with the exact names and the exact detail strings specified (including punctuation, spacing around pipes, and currency symbol ₹).",
-        "No emojis are displayed in this section; use standard UI elements (e.g., bullet, dot, badge) instead of 🟡.",
-        "The section displays correctly in both light and dark themes and is responsive on mobile and desktop."
+        "On desktop, the header navigation provides access to individual bond listings without first going to the Bonds catalog page.",
+        "On mobile, the mobile menu provides access to the same individual bond listing links.",
+        "Selecting a bond entry navigates to \"/bonds/<bondId>\" using TanStack Router params (matching the existing BondCard navigation behavior)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Populate the header’s bond quick-access entries dynamically from the existing bond listings query (use the existing React Query hook that fetches bond listings with IDs). Handle loading, empty, and error states gracefully so the header remains usable even when bond data is unavailable.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "YES"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When bond listings are still loading, the header does not break and shows a reasonable loading/placeholder state for the bond quick links (or temporarily hides them).",
+        "If the bond listings request fails, the header remains functional and does not throw runtime errors; bond quick links are hidden or replaced with a minimal fallback.",
+        "If there are zero bond listings, bond quick links are not shown (or an \"No bonds available\" style message is shown in the bond quick-link area), and the rest of navigation works as before."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Ensure the bond quick-access links are visually and interactionally consistent with the current header styling (Tailwind theme tokens) and do not degrade usability when there are many bonds (e.g., constrain the quick-link list area and keep it scannable).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "YES"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Bond quick-access UI matches existing header typography/colors and hover/active behaviors.",
+        "If the bond list is long, the quick-access UI remains usable (e.g., scrollable list or otherwise constrained) and does not overflow the header or mobile menu layout."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui (read-only UI component sources).",
-    "Do not modify files listed under frontend.immutablePaths in SYSTEM_CONTEXT.",
-    "Do not change backend canister interfaces or persisted state for this request (static frontend content only)."
+    "Do not modify any files under frontend/src/components/ui (compose existing shadcn components instead).",
+    "Do not edit immutable hook files (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
+    "Keep backend architecture unchanged (no new backend services; no external databases)."
   ],
   "nonGoals": [
-    "Adding new backend data models or endpoints to store these offerings.",
-    "Making these offerings purchasable or adding an investment flow for them.",
-    "Changing existing bond catalog filtering/sorting behavior."
+    "Do not change bond data models, backend storage, or add new bond fields solely for navigation.",
+    "Do not add new authentication providers beyond Internet Identity.",
+    "Do not redesign the Bonds page catalog, filters, or bond detail page beyond what is required to add header quick links."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

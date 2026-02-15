@@ -1,37 +1,24 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T07:24:50.746Z",
-  "summary": "REQ-1 appears largely implemented via a new GoldOfferingsSection component containing the 5 specified offerings and imported into BondsPage. The diff evidence suggests it is placed below the bond catalog grid, and it uses non-emoji UI markers. Some added copy/UI (section title/description and a Premium badge) were not explicitly requested and may risk deviating from “exactly as provided” depending on interpretation.",
+  "generatedAt": "2026-02-15T07:56:19.057Z",
+  "summary": "Implemented dynamic bond quick-access links in the site header for both desktop and mobile, sourced from the existing bond listings query and routed via TanStack Router params. Added constrained/scrollable UI for long bond lists. Also introduced unrelated global theme color token changes in index.css.",
   "missing_requirements": [],
   "hallucinated_features": [
     {
-      "description": "Adds a new section heading and marketing description text (“Gold-Backed Investment Plans” + descriptive paragraph) that were not requested as part of REQ-1 (which only specifies listing the offerings with exact names/detail strings).",
-      "reason": "BuildRequest does not ask for additional title/description copy—only the 5 offerings with exact strings; extra copy could be considered beyond scope.",
+      "description": "Global theme color palette/token changes in `frontend/src/index.css` (OKLCH deep green/warm neutral/gold accent) unrelated to adding header bond quick links.",
+      "reason": "BuildRequest focuses on adding bond quick links in the header; it does not request a global theme/palette update. This constitutes a UI redesign risk beyond what is required for navigation.",
       "evidence": [
-        "frontend/src/components/bonds/GoldOfferingsSection.tsx"
-      ]
-    },
-    {
-      "description": "Adds a separate “Premium” Badge for the premium product in addition to the name already containing “(Premium)”.",
-      "reason": "REQ-1 only requires rendering the exact names and detail strings; an additional Premium badge is extra UI not requested and could be interpreted as altering the “exactly as provided” presentation.",
-      "evidence": [
-        "frontend/src/components/bonds/GoldOfferingsSection.tsx"
-      ]
-    },
-    {
-      "description": "Updates project metadata/state tracking (project_state.json) to include new_feature_requests entries unrelated to rendering the section itself.",
-      "reason": "BuildRequest is about a static frontend content change on /bonds; modifying project_state.json is not part of the stated requirements.",
-      "evidence": [
-        "project_state.json"
+        "frontend/src/index.css"
       ]
     }
   ],
-  "confidence": 0.67,
+  "confidence": 0.82,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/bonds/GoldOfferingsSection.tsx",
-    "frontend/src/pages/BondsPage.tsx",
+    "frontend/src/components/bonds/BondQuickLinks.tsx",
+    "frontend/src/components/layout/SiteHeader.tsx",
+    "frontend/src/index.css",
     "project_state.json"
   ]
 }

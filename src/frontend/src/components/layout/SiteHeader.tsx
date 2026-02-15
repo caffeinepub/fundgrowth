@@ -1,16 +1,15 @@
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import LoginButton from '../auth/LoginButton';
 import { useAuth } from '@/hooks/useAuth';
 import { useGetCallerUserProfile } from '@/hooks/useCallerProfile';
+import BondQuickLinks from '../bonds/BondQuickLinks';
 
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const { data: userProfile } = useGetCallerUserProfile();
-  const navigate = useNavigate();
 
   const navLinks = [
     { label: 'Home', path: '/' },
@@ -23,6 +22,10 @@ export default function SiteHeader() {
   if (isAuthenticated) {
     navLinks.push({ label: 'Dashboard', path: '/dashboard' });
   }
+
+  const handleMobileNavClick = () => {
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -66,6 +69,11 @@ export default function SiteHeader() {
             </button>
           </div>
         </div>
+
+        {/* Desktop bond quick links */}
+        <div className="hidden md:block pb-3 border-t pt-3">
+          <BondQuickLinks variant="desktop" />
+        </div>
       </div>
 
       {mobileMenuOpen && (
@@ -77,11 +85,16 @@ export default function SiteHeader() {
                 to={link.path}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2"
                 activeProps={{ className: 'text-foreground' }}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={handleMobileNavClick}
               >
                 {link.label}
               </Link>
             ))}
+            
+            {/* Mobile bond quick links */}
+            <div className="border-t pt-3 mt-2">
+              <BondQuickLinks variant="mobile" onNavigate={handleMobileNavClick} />
+            </div>
           </nav>
         </div>
       )}

@@ -1,9 +1,9 @@
 {
-  "frontend/src/index.css": "Global styles with OKLCH color system using deep green + warm neutral + gold accent palette for finance theme, avoiding blue+purple defaults.",
+  "frontend/src/index.css": "Global styles with OKLCH color system using deep green + warm neutral + gold accent palette for finance theme, now including scrollbar-hide utility for horizontal scrolling bond links.",
   "frontend/tailwind.config.js": "Tailwind configuration with custom theme tokens, Sora display font, custom shadows, and fade-in animation.",
   "frontend/src/App.tsx": "Main application component with TanStack Router setup including all routes (home, dashboard, bonds, bond detail, how-it-works, faq, contact) with NotFoundPage fallback.",
   "frontend/src/components/layout/AppShell.tsx": "Root layout component that wraps all pages with header, footer, and profile setup modal.",
-  "frontend/src/components/layout/SiteHeader.tsx": "Responsive header with navigation including Bonds link in both desktop and mobile menus, with authenticated user profile display.",
+  "frontend/src/components/layout/SiteHeader.tsx": "Responsive header with navigation including bond quick-access links section below main nav on desktop and within mobile menu, with authenticated user profile display and proper mobile menu close handling.",
   "frontend/src/components/layout/SiteFooter.tsx": "Footer with Bonds link added to Platform section, maintaining existing structure and caffeine.ai attribution.",
   "frontend/src/components/auth/LoginButton.tsx": "Authentication button component that handles Internet Identity sign-in/sign-out with loading states.",
   "frontend/src/components/auth/AuthGate.tsx": "Protected route wrapper that shows sign-in prompt for unauthenticated users.",
@@ -27,5 +27,6 @@
   "frontend/src/pages/GoldSecuredSeriesPage.tsx": "New dedicated page displaying the 10 Gold Secured Bond Series (IDs 11-20) with branding, description, and links to individual bond details using stable IDs.",
   "frontend/src/pages/NotFoundPage.tsx": "Generic not-found page with friendly message and link back to home for removed/invalid routes.",
   "frontend/src/hooks/useBonds.ts": "React Query hooks for fetching bond listings with IDs and individual bond details, following the actor-availability gating pattern.",
-  "frontend/src/components/bonds/GoldOfferingsSection.tsx": "Static component displaying 5 gold-backed investment offerings with exact detail strings, using card layout with dot markers instead of emojis, responsive for light/dark themes."
+  "frontend/src/components/bonds/GoldOfferingsSection.tsx": "Static component displaying 5 gold-backed investment offerings with exact detail strings, using card layout with dot markers instead of emojis, responsive for light/dark themes.",
+  "frontend/src/components/bonds/BondQuickLinks.tsx": "Reusable component that renders bond quick-access links using useGetBondListingsWithIds hook, supporting both desktop (horizontal scrollable) and mobile (vertical scrollable) variants with loading/error/empty state handling."
 }

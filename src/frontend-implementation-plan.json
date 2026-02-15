@@ -1,27 +1,67 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add Gold offerings section to Bonds page",
+  "title": "Bond quick links in header navigation",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Add a static Gold product list section beneath the existing bond catalog grid on the /bonds page with exactly 5 offerings and their provided detail strings (no emojis), styled responsively for light/dark themes.",
+      "summary": "Add bond quick-access links to the site header navigation for both desktop and mobile, routing directly to each bond detail page.",
       "acceptanceCriteria": [
-        "Visiting /bonds shows an additional section beneath the existing bond catalog area (below the main grid with filters + bond cards).",
-        "The section renders 5 items with the exact names and the exact detail strings specified (including punctuation, spacing around pipes, and currency symbol ₹).",
-        "No emojis are displayed in this section; use standard UI elements (e.g., bullet, dot, badge) instead of 🟡.",
-        "The section displays correctly in both light and dark themes and is responsive on mobile and desktop."
+        "On desktop, the header navigation provides access to individual bond listings without first going to the Bonds catalog page.",
+        "On mobile, the mobile menu provides access to the same individual bond listing links.",
+        "Selecting a bond entry navigates to \"/bonds/<bondId>\" using TanStack Router params (matching the existing BondCard navigation behavior)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/bonds/GoldOfferingsSection.tsx",
+          "path": "frontend/src/components/bonds/BondQuickLinks.tsx",
           "operation": "create",
-          "description": "Create a reusable, static Gold offerings section component that renders the 5 offerings (title + exact detail string) in a responsive layout using existing Tailwind/theme tokens (e.g., text-foreground, text-muted-foreground, bg-card, border) and a non-emoji marker (e.g., dot/bullet). Verify the component's usage instructions before implementing."
+          "description": "Create a reusable BondQuickLinks component that renders a list of TanStack Router <Link> items to \"/bonds/$bondId\" using params={{ bondId: bondId.toString() }} (matching BondCard behavior). The component should support rendering in both desktop and mobile contexts (e.g., horizontal vs vertical list) and accept callbacks (e.g., onNavigate) for closing the mobile menu after selection."
         },
         {
-          "path": "frontend/src/pages/BondsPage.tsx",
+          "path": "frontend/src/components/layout/SiteHeader.tsx",
           "operation": "modify",
-          "description": "Render the new GoldOfferingsSection below the existing bond catalog grid (after the filters + bond cards area) on the /bonds page, ensuring spacing and responsiveness without changing existing bond catalog behavior. Verify the component's usage instructions before implementing."
+          "description": "Wire BondQuickLinks into the header: (1) desktop navigation area (md+), adding a scannable quick-access section for individual bonds; (2) mobile menu, adding the same bond links and ensuring clicking a bond closes the menu. Keep existing top-level navLinks (including the existing /bonds link) intact."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Populate bond quick-access links from the existing bond listings React Query hook and handle loading/empty/error states without breaking the header.",
+      "acceptanceCriteria": [
+        "When bond listings are still loading, the header does not break and shows a reasonable loading/placeholder state for the bond quick links (or temporarily hides them).",
+        "If the bond listings request fails, the header remains functional and does not throw runtime errors; bond quick links are hidden or replaced with a minimal fallback.",
+        "If there are zero bond listings, bond quick links are not shown (or an \"No bonds available\" style message is shown in the bond quick-link area), and the rest of navigation works as before."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "operation": "modify",
+          "description": "Use the existing useGetBondListingsWithIds React Query hook to fetch bond listings with IDs and render quick links dynamically. Implement graceful states: loading (render placeholder text or hide the section), error (hide section or show minimal fallback), and empty results (hide section or show \"No bonds available\" message). Ensure no runtime exceptions propagate to SiteHeader when data is unavailable."
+        },
+        {
+          "path": "frontend/src/components/layout/SiteHeader.tsx",
+          "operation": "modify",
+          "description": "Integrate the BondQuickLinks component in a way that keeps the header usable during loading/error/empty states (e.g., do not reserve excessive space or block other nav items). Remove any unused imports/variables that become unnecessary after wiring (e.g., avoid keeping unused navigation helpers)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Ensure bond quick-access UI matches existing header Tailwind styling and remains usable when many bonds exist by constraining and making the list scannable.",
+      "acceptanceCriteria": [
+        "Bond quick-access UI matches existing header typography/colors and hover/active behaviors.",
+        "If the bond list is long, the quick-access UI remains usable (e.g., scrollable list or otherwise constrained) and does not overflow the header or mobile menu layout."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "operation": "modify",
+          "description": "Apply header-consistent Tailwind tokens (e.g., text-sm, font-medium, text-muted-foreground, hover:text-foreground, active state styling consistent with existing header links). Add constraints for long lists: desktop should be horizontally scrollable or otherwise width-constrained (e.g., max-width + overflow-x-auto + whitespace-nowrap), and mobile should be vertically constrained (e.g., max-height + overflow-y-auto) to prevent layout overflow."
+        },
+        {
+          "path": "frontend/src/components/layout/SiteHeader.tsx",
+          "operation": "modify",
+          "description": "Adjust layout placement and spacing so the quick links visually integrate with the existing header navigation (desktop) and mobile menu (mobile), ensuring no overflow or interaction regressions when many bonds exist."
         }
       ]
     }

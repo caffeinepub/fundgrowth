@@ -1,26 +1,52 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T07:24:50.748Z",
+  "generatedAt": "2026-02-15T07:56:19.060Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "On the Bonds page (route \"/bonds\"), add a new section below the existing bond catalog content that lists the following offerings exactly as provided, using English text (no emojis):\n\n1) GoldSecure Capital Protection\n- \"10.75% p.a. | 1 Year | Annual | Low Risk\"\n\n2) GoldShield Regular Income\n- \"12.50% p.a. | Monthly | 2 Years\"\n\n3) GoldGrowth Wealth Builder\n- \"14.25% p.a. | Compounding | 3 Years\"\n\n4) GoldPlus Long Term Wealth\n- \"15.75% p.a. | Compounding | 5 Years\"\n\n5) GoldPlatinum WealthSecure (Premium)\n- \"17.50% p.a. | Compounding | HNI | ₹5L+\"",
+        "summary": "Update the main navigation in the site header to include quick-access entries for individual bond listings (each entry should navigate directly to that bond’s detail route \"/bonds/$bondId\"). The quick-access entries must appear in both desktop navigation and the mobile menu.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/bonds/GoldOfferingsSection.tsx",
-          "frontend/src/pages/BondsPage.tsx"
+          "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "frontend/src/components/layout/SiteHeader.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/bonds/GoldOfferingsSection.tsx",
-          "frontend/src/pages/BondsPage.tsx"
+          "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "frontend/src/components/layout/SiteHeader.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Populate the header’s bond quick-access entries dynamically from the existing bond listings query (use the existing React Query hook that fetches bond listings with IDs). Handle loading, empty, and error states gracefully so the header remains usable even when bond data is unavailable.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "frontend/src/components/layout/SiteHeader.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "frontend/src/components/layout/SiteHeader.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Ensure the bond quick-access links are visually and interactionally consistent with the current header styling (Tailwind theme tokens) and do not degrade usability when there are many bonds (e.g., constrain the quick-link list area and keep it scannable).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "frontend/src/components/layout/SiteHeader.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/bonds/BondQuickLinks.tsx",
+          "frontend/src/components/layout/SiteHeader.tsx"
         ]
       }
     ]
@@ -30,8 +56,9 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/bonds/GoldOfferingsSection.tsx",
-    "frontend/src/pages/BondsPage.tsx",
+    "frontend/src/components/bonds/BondQuickLinks.tsx",
+    "frontend/src/components/layout/SiteHeader.tsx",
+    "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
